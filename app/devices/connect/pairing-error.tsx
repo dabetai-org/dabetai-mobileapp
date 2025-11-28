@@ -1,4 +1,4 @@
-// app/(home)/devices/connect/syncing.tsx
+// app/(home)/devices/connect/pairing-error.tsx
 import { Body, BodyBold, H2 } from '@/components/common/Typography';
 import { Button } from '@/components/core/buttons/Button';
 import { Header } from '@/components/core/navigation/Header';
@@ -7,25 +7,22 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 
-export default function SyncingScreen() {
+export default function PairingErrorScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { deviceId, deviceName, deviceType } = params;
 
-  const handleSyncNow = () => {
-    // Navegar a la pantalla de progreso de sincronización
+  const handleRetry = () => {
+    // Reintentar emparejamiento - volver a pairing-device
     router.push({
-      pathname: '/devices/connect/syncing-progress',
+      pathname: '/devices/connect/pairing-device',
       params: { deviceId, deviceName, deviceType }
     } as any);
   };
 
   const handleSkip = () => {
-    // Saltar sincronización y ir directo a setup-complete
-    router.push({
-      pathname: '/devices/connect/setup-complete',
-      params: { deviceId, deviceName, deviceType }
-    } as any);
+    // Saltar y volver al inicio del flujo
+    router.push('/devices/connect' as any);
   };
 
   return (
@@ -40,10 +37,10 @@ export default function SyncingScreen() {
       <View className="flex-1 justify-between px-5 pt-8">
         {/* Sección superior con icono y textos */}
         <View className="items-center gap-6">
-          {/* Icono de check */}
+          {/* Icono de error */}
           <View className="w-16 h-16 items-center justify-center">
             <MaterialCommunityIcons 
-              name="check-circle-outline" 
+              name="close-circle-outline" 
               size={48} 
               color="#374151" // gray-700
             />
@@ -51,16 +48,17 @@ export default function SyncingScreen() {
           
           {/* Título */}
           <H2 className="text-center leading-8 text-gray-700">
-            Emparejamiento exitoso
+            Emparejamiento fallido
           </H2>
           
           {/* Descripción */}
-          <View className="gap-1">
+          <View className="gap-1 px-4">
             <Body className="text-gray-600 text-center leading-6">
-              Tu dispositivo <BodyBold className="text-gray-700">{deviceName}</BodyBold> se ha
+              Ocurrió un error al conectar tu dispositivo{' '}
+              <BodyBold className="text-gray-700">{deviceName}</BodyBold> con dabetai.
             </Body>
-            <Body className="text-gray-600 text-center leading-6">
-              conectado correctamente con dabetai.
+            <Body className="text-gray-600 text-center leading-6 mt-2">
+              Inténtalo de nuevo ahora o más tarde.
             </Body>
           </View>
         </View>
@@ -70,13 +68,13 @@ export default function SyncingScreen() {
           <Button
             variant="fill"
             color="primary"
-            onPress={handleSyncNow}
-            title="Sincronizar datos"
+            onPress={handleRetry}
+            title="Reintentar"
           />
           
           <Button
             variant="outline"
-            color="primary"
+            color="danger"
             onPress={handleSkip}
             title="Saltar por ahora"
           />

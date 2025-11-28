@@ -1,4 +1,4 @@
-// app/(home)/devices/connect/syncing.tsx
+// app/(home)/devices/connect/syncing-complete.tsx
 import { Body, BodyBold, H2 } from '@/components/common/Typography';
 import { Button } from '@/components/core/buttons/Button';
 import { Header } from '@/components/core/navigation/Header';
@@ -7,21 +7,13 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 
-export default function SyncingScreen() {
+export default function SyncingCompleteScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { deviceId, deviceName, deviceType } = params;
 
-  const handleSyncNow = () => {
-    // Navegar a la pantalla de progreso de sincronización
-    router.push({
-      pathname: '/devices/connect/syncing-progress',
-      params: { deviceId, deviceName, deviceType }
-    } as any);
-  };
-
-  const handleSkip = () => {
-    // Saltar sincronización y ir directo a setup-complete
+  const handleContinue = () => {
+    // Navegar a setup-complete
     router.push({
       pathname: '/devices/connect/setup-complete',
       params: { deviceId, deviceName, deviceType }
@@ -51,34 +43,24 @@ export default function SyncingScreen() {
           
           {/* Título */}
           <H2 className="text-center leading-8 text-gray-700">
-            Emparejamiento exitoso
+            Sincronización exitosa
           </H2>
           
           {/* Descripción */}
-          <View className="gap-1">
+          <View className="gap-1 px-4">
             <Body className="text-gray-600 text-center leading-6">
-              Tu dispositivo <BodyBold className="text-gray-700">{deviceName}</BodyBold> se ha
-            </Body>
-            <Body className="text-gray-600 text-center leading-6">
-              conectado correctamente con dabetai.
+              Todos los datos de tu dispositivo <BodyBold className="text-gray-700">{deviceName}</BodyBold> han sido transferidos exitosamente.
             </Body>
           </View>
         </View>
 
-        {/* Botones en la parte inferior */}
-        <View className="pb-8 gap-3">
+        {/* Botón continuar en la parte inferior */}
+        <View className="pb-8">
           <Button
             variant="fill"
             color="primary"
-            onPress={handleSyncNow}
-            title="Sincronizar datos"
-          />
-          
-          <Button
-            variant="outline"
-            color="primary"
-            onPress={handleSkip}
-            title="Saltar por ahora"
+            onPress={handleContinue}
+            title="Continuar"
           />
         </View>
       </View>
