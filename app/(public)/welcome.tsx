@@ -1,22 +1,15 @@
-// src/features/welcome/screens    <AppLayout showNavigation={false} showHeader={false}>WelcomeScreen.tsx
-import { Caption, H2 } from "@/components/common/Typography";
-import { Button, ButtonGroup } from "@/components/core/buttons";
-import { AppLayout } from "@/components/layouts";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Image, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export default function Welcome() {
   const router = useRouter();
 
-  const handleRegister = async () => {
-    await AsyncStorage.clear();
+  const handleRegister = () => {
     router.push("/(auth)/register");
   };
 
-  const handleLogin = async () => {
-    await AsyncStorage.clear();
+  const handleLogin = () => {
     router.push("/(auth)/login");
   };
 
@@ -29,56 +22,60 @@ export default function Welcome() {
   };
 
   return (
-    <AppLayout showNavigation={false} showHeader={false}>
-      {/* Logos */}
-      <View className="items-center gap-4">
-        <Image
-          source={require("@/assets/images/logos/dabetai-main.png")}
-          className="!h-16"
-          resizeMode="contain"
-        />
+    <View className="flex-1 bg-gray-100">
+      <View className="flex-1 justify-between px-4 py-8">
+        {/* Logo superior */}
+        <View className="items-center pt-8">
+          <Text className="text-purple-600 font-bold text-3xl">STRONGIFY</Text>
+        </View>
 
-        <Image
-          source={require("@/assets/images/logos/brand-logo.png")}
-          className="!h-48"
-          resizeMode="contain"
-        />
+        {/* Contenido central */}
+        <View className="items-center gap-6">
+          {/* Icono principal */}
+          <View className="bg-purple-600 rounded-3xl w-32 h-32 items-center justify-center">
+            <View className="border-4 border-white rounded-full w-16 h-16 items-end justify-end">
+              <View className="bg-white w-4 h-2 rounded-t-full" style={{ marginBottom: -2 }} />
+            </View>
+          </View>
+
+          {/* Título */}
+          <Text className="text-center text-gray-800 font-bold text-2xl">
+            ¡Comienza tu{"\n"}transformación!
+          </Text>
+
+          {/* Botones */}
+          <View className="w-full gap-4 px-4">
+            <TouchableOpacity
+              onPress={handleRegister}
+              className="bg-purple-600 rounded-full py-4 items-center"
+            >
+              <Text className="text-white font-semibold text-base">Registrarse</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              onPress={handleLogin}
+              className="border-2 border-purple-600 rounded-full py-4 items-center"
+            >
+              <Text className="text-purple-600 font-semibold text-base">Iniciar sesión</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Términos y condiciones */}
+        <View className="px-6">
+          <Text className="text-center text-xs text-gray-500">
+            Continúa solo si estás de acuerdo con nuestros{" "}
+            <Text className="text-purple-600" onPress={handleTermsPress}>
+              Términos y condiciones
+            </Text>{" "}
+            y nuestra{" "}
+            <Text className="text-purple-600" onPress={handlePrivacyPress}>
+              Política de privacidad
+            </Text>
+            .
+          </Text>
+        </View>
       </View>
-
-      {/* Contenido principal */}
-      {/* Título y botones */}
-      <View className="gap-4">
-        <H2 className="text-center">
-          Monitorea tu diabetes con inteligencia artificial
-        </H2>
-
-        <ButtonGroup align="stack">
-          <Button
-            title="Registrarse"
-            onPress={handleRegister}
-            variant="fill"
-            color="primary"
-          />
-          <Button
-            title="Iniciar sesión"
-            onPress={handleLogin}
-            variant="outline"
-            color="primary"
-          />
-        </ButtonGroup>
-      </View>
-
-      {/* Términos y condiciones */}
-      <Caption className="text-center !text-gray-500">
-        Continúa solo si estás de acuerdo con nuestros{" "}
-        <Caption className="text-primary-900" onPress={handleTermsPress}>
-          Términos y condiciones
-        </Caption>{" "}
-        y nuestra{" "}
-        <Caption className="text-primary-900" onPress={handlePrivacyPress}>
-          Política de privacidad
-        </Caption>
-      </Caption>
-    </AppLayout>
+    </View>
   );
 }
