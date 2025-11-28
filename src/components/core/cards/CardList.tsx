@@ -76,7 +76,7 @@ export const CardList: React.FC<CardListProps> = ({
       )}
 
       {/* Cards List Container */}
-      <View className="bg-gray-50 rounded-2xl border border-gray-300 overflow-hidden">
+      <View className="bg-white rounded-2xl border border-gray-300 overflow-hidden">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           const itemId = item.id || `item-${index}`;

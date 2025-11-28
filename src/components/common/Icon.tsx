@@ -66,12 +66,15 @@ const IconMap = {
   'clock': 'clock',
   'box': 'box',
   'hexagon': 'hexagon',
+  'monitor': 'monitor',
   
   // Communication
   'phone': 'phone',
   'mail': 'mail',
   'share': 'share-2',
   'link': 'link',
+  'paperclip': 'paperclip',
+  'map-pin': 'map-pin',
   
   // Files/Documents
   'file': 'file',
