@@ -1,24 +1,32 @@
-// app/doctor/link/setup-complete.tsx
+// app/doctor/link/linking.tsx
 import { Body, BodyBold, H2 } from '@/components/common/Typography';
 import { Button } from '@/components/core/buttons/Button';
 import { Header } from '@/components/core/navigation/Header';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 
 // Mock: datos del médico
 const doctorName = 'Dr. Fermín Cárdenas';
 
-export default function LinkingSuccessScreen() {
+export default function LinkingScreen() {
   const router = useRouter();
 
-  const handleContinue = () => {
-    router.push('/doctor' as any);
-  };
+  useEffect(() => {
+    // Simular proceso de vinculación
+    const linkingTimer = setTimeout(() => {
+      // Simular éxito después de 3 segundos
+      router.push('/doctor/link/setup-complete' as any);
+    }, 3000);
 
-  const handleManage = () => {
-    router.push('/doctor' as any);
+    return () => {
+      clearTimeout(linkingTimer);
+    };
+  }, []);
+
+  const handleCancel = () => {
+    router.back();
   };
 
   return (
@@ -30,45 +38,38 @@ export default function LinkingSuccessScreen() {
 
       <View className="flex-1 justify-between px-5 pt-8">
         <View className="items-center gap-6">
-          {/* Icono de check azul */}
-          <View className="w-20 h-20 items-center justify-center">
+          {/* Icono de refresh */}
+          <View className="w-16 h-16 items-center justify-center">
             <MaterialCommunityIcons 
-              name="check-circle-outline" 
-              size={64} 
-              color="#1976D2" // primary-700 - azul oscuro
+              name="refresh" 
+              size={48} 
+              color="#374151" // gray-700
             />
           </View>
           
           {/* Título */}
           <H2 className="text-center leading-8 text-gray-700">
-            Vinculación exitosa
+            Vinculando tu cuenta con el {doctorName}
           </H2>
           
           {/* Descripción */}
-          <View className="gap-1 px-4">
+          <View className="gap-2 px-4">
             <Body className="text-gray-600 text-center leading-6">
-              Tu cuenta se ha vinculado correctamente con el <BodyBold className="text-gray-700">{doctorName}</BodyBold>.
+              Estamos estableciendo la conexión segura y configurando los permisos de datos.
             </Body>
             <Body className="text-gray-600 text-center leading-6">
-              Tus datos seleccionados están siendo compartidos.
+              Por favor, <BodyBold className="text-gray-700">no cierres la aplicación</BodyBold>.
             </Body>
           </View>
         </View>
 
-        {/* Botones */}
-        <View className="pb-8 gap-3">
-          <Button
-            variant="fill"
-            color="primary"
-            onPress={handleContinue}
-            title="Continuar"
-          />
-          
+        {/* Botón cancelar */}
+        <View className="pb-8">
           <Button
             variant="outline"
-            color="primary"
-            onPress={handleManage}
-            title="Gestionar mi vinculación"
+            color="danger"
+            onPress={handleCancel}
+            title="Cancelar vinculación"
           />
         </View>
       </View>

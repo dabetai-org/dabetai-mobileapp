@@ -1,4 +1,4 @@
-// app/doctor/link/setup-complete.tsx
+// app/doctor/link/linking-error.tsx
 import { Body, BodyBold, H2 } from '@/components/common/Typography';
 import { Button } from '@/components/core/buttons/Button';
 import { Header } from '@/components/core/navigation/Header';
@@ -10,15 +10,15 @@ import { View } from 'react-native';
 // Mock: datos del médico
 const doctorName = 'Dr. Fermín Cárdenas';
 
-export default function LinkingSuccessScreen() {
+export default function LinkingErrorScreen() {
   const router = useRouter();
 
-  const handleContinue = () => {
-    router.push('/doctor' as any);
+  const handleRetry = () => {
+    router.push('/doctor/link/linking' as any);
   };
 
-  const handleManage = () => {
-    router.push('/doctor' as any);
+  const handleSkip = () => {
+    router.push('/doctor/link' as any);
   };
 
   return (
@@ -30,27 +30,27 @@ export default function LinkingSuccessScreen() {
 
       <View className="flex-1 justify-between px-5 pt-8">
         <View className="items-center gap-6">
-          {/* Icono de check azul */}
-          <View className="w-20 h-20 items-center justify-center">
+          {/* Icono de error */}
+          <View className="w-16 h-16 items-center justify-center">
             <MaterialCommunityIcons 
-              name="check-circle-outline" 
-              size={64} 
-              color="#1976D2" // primary-700 - azul oscuro
+              name="close-circle-outline" 
+              size={48} 
+              color="#374151" // gray-700
             />
           </View>
           
           {/* Título */}
           <H2 className="text-center leading-8 text-gray-700">
-            Vinculación exitosa
+            Vinculación fallida
           </H2>
           
           {/* Descripción */}
           <View className="gap-1 px-4">
             <Body className="text-gray-600 text-center leading-6">
-              Tu cuenta se ha vinculado correctamente con el <BodyBold className="text-gray-700">{doctorName}</BodyBold>.
+              Ocurrió un error al vincular tu cuenta con el <BodyBold className="text-gray-700">{doctorName}</BodyBold>.
             </Body>
-            <Body className="text-gray-600 text-center leading-6">
-              Tus datos seleccionados están siendo compartidos.
+            <Body className="text-gray-600 text-center leading-6 mt-2">
+              Inténtalo de nuevo ahora o más tarde.
             </Body>
           </View>
         </View>
@@ -60,15 +60,15 @@ export default function LinkingSuccessScreen() {
           <Button
             variant="fill"
             color="primary"
-            onPress={handleContinue}
-            title="Continuar"
+            onPress={handleRetry}
+            title="Reintentar"
           />
           
           <Button
             variant="outline"
-            color="primary"
-            onPress={handleManage}
-            title="Gestionar mi vinculación"
+            color="danger"
+            onPress={handleSkip}
+            title="Saltar por ahora"
           />
         </View>
       </View>
