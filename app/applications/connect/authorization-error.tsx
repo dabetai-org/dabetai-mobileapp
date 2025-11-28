@@ -1,4 +1,4 @@
-// app/applications/setup-complete.tsx
+// app/applications/connect/authorization-error.tsx
 import { Body, BodyBold, H2 } from '@/components/common/Typography';
 import { Button } from '@/components/core/buttons/Button';
 import { Header } from '@/components/core/navigation/Header';
@@ -7,19 +7,22 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 
-export default function SetupCompleteScreen() {
+export default function AuthorizationErrorScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { appId, appName } = params;
 
-  const handleContinue = () => {
-    // Navegar a la lista de aplicaciones
-    router.push('/applications' as any);
+  const handleRetry = () => {
+    // Reintentar autorización
+    router.push({
+      pathname: '/applications/connect/authorizing',
+      params: { appId, appName }
+    } as any);
   };
 
-  const handleGoToDevices = () => {
-    // Navegar a dispositivos
-    router.push('/devices' as any);
+  const handleSkip = () => {
+    // Saltar y volver al inicio
+    router.push('/applications/connect' as any);
   };
 
   return (
@@ -34,10 +37,10 @@ export default function SetupCompleteScreen() {
       <View className="flex-1 justify-between px-5 pt-8">
         {/* Sección superior con icono y textos */}
         <View className="items-center gap-6">
-          {/* Icono de check outline gris oscuro */}
+          {/* Icono de error */}
           <View className="w-16 h-16 items-center justify-center">
             <MaterialCommunityIcons 
-              name="check-circle-outline" 
+              name="close-circle-outline" 
               size={48} 
               color="#374151" // gray-700
             />
@@ -45,13 +48,16 @@ export default function SetupCompleteScreen() {
           
           {/* Título */}
           <H2 className="text-center leading-8 text-gray-700">
-            Configuración completada
+            Autorización fallida
           </H2>
           
           {/* Descripción */}
           <View className="gap-1 px-4">
             <Body className="text-gray-600 text-center leading-6">
-              El proceso de configuración de tu aplicación <BodyBold className="text-gray-700">{appName}</BodyBold> se ha completado exitosamente.
+              Ocurrió un error al obtener los permisos para importar tus datos de <BodyBold className="text-gray-700">{appName}</BodyBold>.
+            </Body>
+            <Body className="text-gray-600 text-center leading-6 mt-2">
+              Inténtalo de nuevo ahora o más tarde.
             </Body>
           </View>
         </View>
@@ -61,15 +67,15 @@ export default function SetupCompleteScreen() {
           <Button
             variant="fill"
             color="primary"
-            onPress={handleContinue}
-            title="Continuar"
+            onPress={handleRetry}
+            title="Reintentar"
           />
           
           <Button
             variant="outline"
-            color="primary"
-            onPress={handleGoToDevices}
-            title="Ir a mis dispositivos"
+            color="danger"
+            onPress={handleSkip}
+            title="Saltar por ahora"
           />
         </View>
       </View>

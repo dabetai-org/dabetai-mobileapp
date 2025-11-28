@@ -1,4 +1,4 @@
-// app/applications/setup-complete.tsx
+// app/applications/connect/authorization-success.tsx
 import { Body, BodyBold, H2 } from '@/components/common/Typography';
 import { Button } from '@/components/core/buttons/Button';
 import { Header } from '@/components/core/navigation/Header';
@@ -7,19 +7,25 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 
-export default function SetupCompleteScreen() {
+export default function AuthorizationSuccessScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { appId, appName } = params;
 
-  const handleContinue = () => {
-    // Navegar a la lista de aplicaciones
-    router.push('/applications' as any);
+  const handleSyncNow = () => {
+    // Navegar a la pantalla de importación
+    router.push({
+      pathname: '/applications/connect/importing',
+      params: { appId, appName }
+    } as any);
   };
 
-  const handleGoToDevices = () => {
-    // Navegar a dispositivos
-    router.push('/devices' as any);
+  const handleSkip = () => {
+    // Saltar importación y completar setup
+    router.push({
+      pathname: '/applications/setup-complete',
+      params: { appId, appName }
+    } as any);
   };
 
   return (
@@ -34,7 +40,7 @@ export default function SetupCompleteScreen() {
       <View className="flex-1 justify-between px-5 pt-8">
         {/* Sección superior con icono y textos */}
         <View className="items-center gap-6">
-          {/* Icono de check outline gris oscuro */}
+          {/* Icono de check */}
           <View className="w-16 h-16 items-center justify-center">
             <MaterialCommunityIcons 
               name="check-circle-outline" 
@@ -45,13 +51,13 @@ export default function SetupCompleteScreen() {
           
           {/* Título */}
           <H2 className="text-center leading-8 text-gray-700">
-            Configuración completada
+            Autorización exitosa
           </H2>
           
           {/* Descripción */}
           <View className="gap-1 px-4">
             <Body className="text-gray-600 text-center leading-6">
-              El proceso de configuración de tu aplicación <BodyBold className="text-gray-700">{appName}</BodyBold> se ha completado exitosamente.
+              Hemos obtenido los permisos para importar tus datos de <BodyBold className="text-gray-700">{appName}</BodyBold>.
             </Body>
           </View>
         </View>
@@ -61,15 +67,15 @@ export default function SetupCompleteScreen() {
           <Button
             variant="fill"
             color="primary"
-            onPress={handleContinue}
-            title="Continuar"
+            onPress={handleSyncNow}
+            title="Sincronizar datos"
           />
           
           <Button
             variant="outline"
             color="primary"
-            onPress={handleGoToDevices}
-            title="Ir a mis dispositivos"
+            onPress={handleSkip}
+            title="Saltar por ahora"
           />
         </View>
       </View>
